@@ -1,19 +1,26 @@
 var express = require('express');
 var app = express();
 var PORT = process.env.PORT  || 3000;
-var todos = [{
-	id: 1,
-	description: 'Meet the parents',
-	completed: false
-},{
-	id:2,
-	description: 'Go to market',
-	completed: false
-}, {
-	id:3,
-	description: 'Run',
-	completed:true
-}];
+var bodyParser = require('body-parser');
+
+
+app.use(bodyParser.json());
+// var todos = [{
+// 	id: 1,
+// 	description: 'Meet kabila parents',
+// 	completed: false
+// },{
+// 	id:2,
+// 	description: 'Go to market',
+// 	completed: false
+// }, {
+// 	id:3,
+// 	description: 'Run',
+// 	completed:true
+// }];
+
+var todos = []
+var todoNextId = 1;
 
 app.get('/',function(req,res) {
 	res.send('Hello Shivangi!');
@@ -41,6 +48,19 @@ app.get('/todos/:id', function(req, res) {
 		res.status(404).send();
 	}
 	//res.send('Asking for response for' + req.params.id);
+});
+
+
+//POST /todos
+app.post('/todos',function(req, res) {
+	var body = req.body;
+
+	body.id = todoNextId++;
+
+	todos.push(body);
+
+	//console.log('description: ' + body.description);
+	res.json(body);
 });
 
 
